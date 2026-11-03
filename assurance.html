@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Colisbledi — Assurance colis</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="platform.css">
+</head>
+<body>
+<header class="topbar"><div class="wrap">
+  <a class="logo" href="index.html"><span class="logo-mark"><img src="assets/logo.png" alt=""></span><span class="logo-text">Colis<span>bledi</span></span></a>
+  <nav class="pills" aria-label="Navigation">
+    <a href="index.html">Accueil</a><a href="app.html">Trajets</a><a href="assurance.html" class="on">Assurance</a><a href="app.html">Mon espace</a>
+  </nav>
+  <a class="btn sm" href="app.html">Voir les trajets</a>
+</div></header>
+
+<main class="wrap" style="padding-bottom:80px">
+  <section class="hero-s">
+    <div class="eyebrow">Assurance & preuve de remise</div>
+    <h1>Votre colis, <span class="hl">protégé</span> jusqu'à la remise.</h1>
+    <p>Choisissez le niveau d'assurance selon la valeur déclarée. À l'arrivée, le destinataire signe sur son écran : la remise est datée et enregistrée.</p>
+  </section>
+
+  <section class="grid g-main" style="margin-top:28px">
+    <div class="card">
+      <h2>Tarifs de l'assurance</h2>
+      <p class="muted small" style="margin-bottom:12px">Le tarif dépend de la valeur déclarée du contenu.</p>
+      <div id="rows"></div>
+      <p class="muted small" style="margin-top:14px">Tarifs indicatifs, à confirmer avec l'assureur partenaire. Au-delà de 1 000 €, demandez un devis.</p>
+    </div>
+    <div class="card linen">
+      <h2>Simulateur</h2>
+      <p class="small" style="color:var(--charcoal);font-weight:500;margin-bottom:16px">Indiquez la valeur de ce que vous envoyez.</p>
+      <div class="field"><label for="v">Valeur déclarée (€)</label><input id="v" type="number" min="0" step="1" value="120" inputmode="decimal"></div>
+      <div class="sim"><div id="out" class="small" style="font-weight:700;color:var(--charcoal)"></div><output id="price" for="v">—</output></div>
+      <a class="btn dark full" href="app.html" style="margin-top:18px">Réserver un trajet assuré →</a>
+    </div>
+  </section>
+
+  <section class="grid g3" style="margin-top:20px">
+    <div class="card rule"><div class="num">1</div><h3>Préparer le colis</h3><ul><li>Emballage solide et adapté au contenu.</li><li>Contenu protégé, colis fermé avec soin.</li><li>Numéro d'envoi écrit lisiblement dessus.</li></ul></div>
+    <div class="card rule"><div class="num">2</div><h3>Signature à la remise</h3><p>Le destinataire signe sur mobile ou ordinateur. Sont enregistrés : la date et l'heure, le numéro d'envoi et le nom du signataire.</p></div>
+    <div class="card rule"><div class="num">3</div><h3>En cas de dommage</h3><ul><li>Signalez-le tout de suite dans l'espace client.</li><li>Photographiez le colis et son emballage.</li><li>Gardez tout jusqu'à la clôture du dossier.</li></ul></div>
+    <div class="card rule"><div class="num">4</div><h3>En cas de perte</h3><p>Une recherche est lancée auprès du transporteur. Si besoin, un dossier de sinistre est ouvert selon la procédure de l'assureur.</p></div>
+    <div class="card rule"><div class="num">5</div><h3>Médicaments</h3><p>Un envoi de médicaments est vérifié par un pharmacien partenaire avant le départ. Indiquez-le dans le formulaire.</p></div>
+    <div class="card rule"><div class="num">6</div><h3>Vos garanties</h3><ul><li>Suivi de chaque étape</li><li>Preuve de remise signée</li><li>Protection selon le contrat</li><li>Suivi du dossier de sinistre</li></ul></div>
+  </section>
+
+  <section class="card lime" style="margin-top:20px;display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap">
+    <div><h2 style="color:var(--forest-ink);font-size:28px">Prêt à envoyer ?</h2><p style="font-weight:600;opacity:.8">L'assurance se choisit à la création de l'envoi.</p></div>
+    <a class="btn dark" href="app.html">Voir les trajets →</a>
+  </section>
+</main>
+
+<footer class="foot"><div class="wrap">
+  <a class="logo" href="index.html"><span class="logo-mark"><img src="assets/logo.png" alt=""></span><span class="logo-text">Colis<span>bledi</span></span></a>
+  <div class="foot-links"><a href="index.html">Accueil</a><a href="assurance.html">Assurance</a><a href="app.html">Mon espace</a></div>
+  <div class="foot-copy">© 2026 Colisbledi — Livraison de confiance</div>
+</div></footer>
+
+<script>
+const TIERS=[[50,2],[100,3.5],[250,5],[500,8],[1000,13]];
+const eur=n=>n.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
+const rows=document.getElementById('rows');
+function draw(sel){
+  rows.innerHTML=TIERS.map((t,i)=>'<div class="price-row'+(i===sel?' sel':'')+'"><span>Jusqu\'à '+t[0].toLocaleString('fr-FR')+' €</span><b>'+eur(t[1])+'</b></div>').join('');
+}
+function calc(){
+  const v=parseFloat(document.getElementById('v').value);
+  const out=document.getElementById('out'),pr=document.getElementById('price');
+  if(!(v>0)){out.textContent='Saisissez une valeur.';pr.textContent='—';draw(-1);return}
+  const i=TIERS.findIndex(t=>v<=t[0]);
+  if(i<0){out.textContent='Au-delà de 1 000 € : devis nécessaire.';pr.textContent='Sur devis';draw(-1);return}
+  out.textContent='Niveau conseillé : jusqu\'à '+TIERS[i][0].toLocaleString('fr-FR')+' €';pr.textContent=eur(TIERS[i][1]);draw(i);
+}
+document.getElementById('v').addEventListener('input',calc);calc();
+</script>
+</body>
+</html>
